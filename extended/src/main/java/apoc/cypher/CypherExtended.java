@@ -9,6 +9,7 @@ import apoc.util.Util;
 import apoc.util.collection.Iterators;
 import org.apache.commons.lang3.StringUtils;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.QueryExecutionType;
 import org.neo4j.graphdb.QueryStatistics;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
@@ -223,7 +224,7 @@ public class CypherExtended {
     }
 
     private boolean isSchemaOperation(String stmt) {
-        return stmt.matches("(?is).*(create|drop)\\s+(index|constraint).*");
+        return Util.isQueryValid(db, stmt, QueryExecutionType.QueryType.SCHEMA_WRITE);
     }
     private boolean isPeriodicOperation(String stmt) {
         return stmt.matches("(?is).*using\\s+periodic.*") || stmt.matches("(?is).*in\\s+transactions.*");
